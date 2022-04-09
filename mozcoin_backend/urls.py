@@ -24,5 +24,5 @@ urlpatterns = [
     path('api/v1/users/<uuid:uuid>', login_user),
     path('api/v1/coins/', get_coin_types),
     path('api/v1/coins/<str:name>', get_coin_info),
-    #path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
 ]

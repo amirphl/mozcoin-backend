@@ -9,7 +9,7 @@ def register_user(req, *arg, **kwargs):
         'level': -5,
         'num_mozcoins': -49,
         'token': 'this-is-a-reg-token',
-    })
+    }, status = 201)
 
 
 def login_user(req, *args, **kwargs):
