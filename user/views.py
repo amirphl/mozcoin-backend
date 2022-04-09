@@ -12,11 +12,20 @@ def register_user(req, *arg, **kwargs):
     }, status = 201)
 
 
+n = 0
 def login_user(req, *args, **kwargs):
+    global n
+    if n == 0:
+        moz = 450
+        n = 1
+    else:
+        moz = 349
+        n = 0
+
     return JsonResponse({
         'uuid':'c3f2896f-2bd3-4343-90a8-26002f70f94d',
         'name': 'this-is-login name',
         'level': -76,
-        'num_mozcoins': 498,
+        'num_mozcoins': moz,
         'token': 'this-is-a- *** new token ***',
     })
