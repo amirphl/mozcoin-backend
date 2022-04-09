@@ -45,3 +45,6 @@ def get_coin_info(req, name):
     n += 1
     n = n % 3
     return JsonResponse(data)
+
+def create_prediction(req, name):
+    return JsonResponse({}, status = 201)
