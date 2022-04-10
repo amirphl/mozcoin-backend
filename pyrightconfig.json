@@ -1,0 +1,10 @@
+{
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+
+  "executionEnvironments": [
+    {
+      "root": "./"
+    }
+  ]
+}
