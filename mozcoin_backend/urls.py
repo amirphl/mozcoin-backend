@@ -15,15 +15,15 @@ Including another URLconf
 """
 from django.urls import path
 
-from coin.views import create_prediction, get_coin_info, get_coin_types
+from coin.views import ListCoins, RetrieveCoin, create_prediction
 from user.views import LoginUser, RegisterUser
 
 
 urlpatterns = [
     path('api/v1/users/', RegisterUser.as_view()),
     path('api/v1/users/<uuid:uuid>', LoginUser.as_view()),
-    path('api/v1/coins/', get_coin_types),
-    path('api/v1/coins/<str:name>', get_coin_info),
+    path('api/v1/coins/', ListCoins.as_view()),
+    path('api/v1/coins/<str:name>', RetrieveCoin.as_view()),
     path('api/v1/coins/<str:name>/predictions/', create_prediction),
     # path('admin/', admin.site.urls),
 ]

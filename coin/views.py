@@ -1,50 +1,54 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpResponseNotFound, JsonResponse
+from rest_framework.generics import RetrieveAPIView
+
+from pycoingecko import CoinGeckoAPI
 
 
-def get_coin_types(req):
-    return JsonResponse({
-        'btc' : {},
-        'eth': {},
-    })
+cg = CoinGeckoAPI()
+coins = {
+    'btc' : {},
+    'eth': {},
+}
+verbose_coins = {
+    'btc': 'bitcoin',
+    'eth': 'ethereum',
+}
 
 
-n = 0
-def get_coin_info(req, name):
-    data = {'name': name}
-    global n
+class ListCoins(RetrieveAPIView):
+    authentication_classes = []
+    permission_classes = []
 
-    if n == 0:
-        data['m'] = 1
-        data['n'] = 1
-        data['branches'] = {
-            0: 3000,
-            1: 2000,
-            3: 4000,
-            6: 45000,
+    def get(self, request):
+        return JsonResponse(coins)
+
+
+class RetrieveCoin(RetrieveAPIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, name):
+        if name not in coins.keys():
+            return HttpResponseNotFound()
+
+        ver_name = verbose_coins[name]
+        price = cg.get_price(ids=ver_name, vs_currencies='usd')[ver_name]['usd']
+        branches = ['INF',]
+
+        # TODO
+        for i in range(3, -3, -1):
+            branches.append(str(int(price * (1 + i / 1000))))
+
+        data = {
+            'name': name,
+            'curr_price': price,
+            'm': 1, # TODO
+            'n': 2, # TODO
+            'branches': branches
         }
-    if n == 1:
-        data['m'] = 1
-        data['n'] = 2
-        data['branches'] = {
-            0: 1000,
-            1: 5000,
-            3: -39,
-            5: -39,
-            7: -4444,
-            -1: 4000,
-        }
-    if n == 2:
-        data['m'] = 2
-        data['n'] = 2
-        data['branches'] = {
-            0: 45,
-            1: 69,
-        }
 
-    n += 1
-    n = n % 3
-    return JsonResponse(data)
+        return JsonResponse(data)
+
 
 def create_prediction(req, name):
     return JsonResponse({}, status = 201)
