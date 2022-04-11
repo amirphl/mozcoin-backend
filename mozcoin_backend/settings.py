@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = None # TODO
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False # TODO
+DEBUG = os.getenv('DEBUG') == 'DEBUG'
 
 ALLOWED_HOSTS = ['*']
 
@@ -171,8 +172,18 @@ SIMPLE_JWT = {
 }
 
 # Redis config
-REDIS_HOST = 'localhost' # TODO
-REDIS_PORT = 6379 # TODO
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
+
+if REDIS_HOST is None:
+    print('REDIS_HOST is None')
+    exit()
+
+if REDIS_PORT is None:
+    print('REDIS_PORT is None')
+    exit()
+
+REDIS_PORT = int(REDIS_PORT)
 
 # Celery application definition
 CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
