@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = None
+SECRET_KEY = None # TODO
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = False # TODO
 
 ALLOWED_HOSTS = ['*']
 
@@ -168,4 +168,24 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+# Redis config
+REDIS_HOST = 'localhost' # TODO
+REDIS_PORT = 6379 # TODO
+
+# Celery application definition
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Asia/Tehran' # TODO
+CELERY_IMPORTS = ['coin.task']
+CELERY_BEAT_SCHEDULE = {
+    'update-prediction-params': {
+        'task': 'coin.task.update_prediction_params',
+        'schedule': timedelta(seconds=10),
+        # 'args': (*args)
+    },
 }
