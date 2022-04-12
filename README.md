@@ -1,95 +1,95 @@
 ## setup environment
-	- firewall
-		- ```sudo ufw allow ssh```
-		- ```sudo ufw allow http```
-		- ```sudo ufw enable```
-		- ```sudo ufw status``` 
-	- We had some problems with ```apt_pkg``` (It was missing due to different python versions installed on the server). to fix:
-		- ```sudo ln -s apt_pkg.cpython-38-x86_64-linux-gnu.so apt_pkg.so```
-		- ```sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1```
-		- ```sudo update-alternatives  --set python3 /usr/bin/python3.8```
-		- ```sudo update-alternatives --config python3```
-	- ```apt install python3-pip```
-	- docker and docker compose:
-		- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
-		- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
-		- copy redis docker image (use ```scp```)
-		- ```docker load < redis.tar```
-	- gunicorn
-		- ```sudo apt install gunicorn```
-		- ```sudo vim /etc/systemd/system/gunicorn.service```
-			- https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
-		- ```sudo systemctl enable gunicorn.service```
-		- ```sudo systemctl restart gunicorn.service```
-		- ```sudo systemctl status gunicorn```
-		- ```sudo systemctl daemon-reload```
-	- nginx
-		- ```sudo apt install nginx```
-		- ```/etc/nginx/sites-enabled/default```
-			- https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
-		- ```sudo nginx -t```
-		- ```sudo systemctl restart nginx```
-		- ```sudo systemctl status nginx```
-		- ```sudo fuser 80/tcp```
-		- ```sudo ls -n /proc/<pid>/exe```
-		- ```/var/www/html/index/index.html```
-		- ```sudo tail -f /var/log/nginx/access.log```
+- firewall
+	- ```sudo ufw allow ssh```
+	- ```sudo ufw allow http```
+	- ```sudo ufw enable```
+	- ```sudo ufw status```
+- We had some problems with ```apt_pkg``` (It was missing due to different python versions installed on the server). to fix:
+	- ```sudo ln -s apt_pkg.cpython-38-x86_64-linux-gnu.so apt_pkg.so```
+	- ```sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1```
+	- ```sudo update-alternatives  --set python3 /usr/bin/python3.8```
+	- ```sudo update-alternatives --config python3```
+- ```apt install python3-pip```
+- docker and docker compose:
+	- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
+	- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+	- copy redis docker image (use ```scp```)
+	- ```docker load < redis.tar```
+- gunicorn
+	- ```sudo apt install gunicorn```
+	- ```sudo vim /etc/systemd/system/gunicorn.service```
+		- https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
+	- ```sudo systemctl enable gunicorn.service```
+	- ```sudo systemctl restart gunicorn.service```
+	- ```sudo systemctl status gunicorn```
+	- ```sudo systemctl daemon-reload```
+- nginx
+	- ```sudo apt install nginx```
+	- ```/etc/nginx/sites-enabled/default```
+		- https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
+	- ```sudo nginx -t```
+	- ```sudo systemctl restart nginx```
+	- ```sudo systemctl status nginx```
+	- ```sudo fuser 80/tcp```
+	- ```sudo ls -n /proc/<pid>/exe```
+	- ```/var/www/html/index/index.html```
+	- ```sudo tail -f /var/log/nginx/access.log```
 
 ## deployment
-	- pull the master branch
-	- run redis docker image:
-		- ```docker compose up -d```
-		- ```docker logs mozcoin-backend-redis-1```
-		- ```docker inspect mozcoin-backend-redis-1  | grep -i ip```
-	- install new requirements:
-		- ```python3 -m pip install -r requirements.txt```
-		- ```python3 -m pip install pytz --upgrade```
-	- update env vars
-		- update redis IP
-		- ```vim ~/.bashrc```
-		- ```source ~/.bashrc```
-		- ```sudo vim /etc/systemd/system/gunicorn.service```
-		- ```sudo systemctl daemon-reload```
-	- ```python3 manage.py migrate```
-	- ```python3 manage.py shell```
-		- ```Coin.objects.create(name='btc', verbose_name='bitcoin')```
-		- ```Coin.objects.create(name='eth', verbose_name='ethereum')```
-		- ...
-	- gunicorn:
-		- ```sudo systemctl daemon-reload```
-		- ```sudo systemctl restart gunicorn.service```
-		- ```sudo systemctl status gunicorn.service```
-	- celery:
-		- https://rakeshwrites.medium.com/celery-worker-as-a-daemon-on-aws-ec2-ubuntu-instance-9d4ab15b2d70
-		- update ```CELERY_BIN, CELERYD_USER, CELERYD_GROUP```
-		- samples are available at ```celery/```
+- pull the master branch
+- run redis docker image:
+	- ```docker compose up -d```
+	- ```docker logs mozcoin-backend-redis-1```
+	- ```docker inspect mozcoin-backend-redis-1  | grep -i ip```
+- install new requirements:
+	- ```python3 -m pip install -r requirements.txt```
+	- ```python3 -m pip install pytz --upgrade```
+- update env vars
+	- update redis IP
+	- ```vim ~/.bashrc```
+	- ```source ~/.bashrc```
+	- ```sudo vim /etc/systemd/system/gunicorn.service```
+	- ```sudo systemctl daemon-reload```
+- ```python3 manage.py migrate```
+- ```python3 manage.py shell```
+	- ```Coin.objects.create(name='btc', verbose_name='bitcoin')```
+	- ```Coin.objects.create(name='eth', verbose_name='ethereum')```
+	- ...
+- gunicorn:
+	- ```sudo systemctl daemon-reload```
+	- ```sudo systemctl restart gunicorn.service```
+	- ```sudo systemctl status gunicorn.service```
+- celery:
+	- https://rakeshwrites.medium.com/celery-worker-as-a-daemon-on-aws-ec2-ubuntu-instance-9d4ab15b2d70
+	- update ```CELERY_BIN, CELERYD_USER, CELERYD_GROUP```
+	- samples are available at ```celery/```
 
 ## TODO
-	- Add ADA logo
-	- auth:
-		- ListCoins
-		- RetrieveCoin
-	- remove m,n from responses and database
-	- google: free crypto price api
-		- compatible price with trading view (use same exchange price)
-		- "Our Free API has a rate limit of 50 calls/minute."
-	- use queue for processing price predictions
-	- redesign whole process:
-		- parctice: other designs
-	- atomic operations:
-		- update num_mozcoins in CreatePrediction
-	- make sure everything is UTC inside server
-	- make sure everything is Local timezone inside client
-	- different sterategies for prediction params
-	- other celery libs:
-		- django-celery-beats
-		- django-celery-results
-	- num gunicorn workers
-	- organize imports and pylint
-	- handle corner case of 51 to 60 in front (client side)
-	- redis has a lot of celery keys
-	- switch to postgres
-	- celery:
-		- ```CELERYD_OPTS="--time-limit=300 --concurrency=8"```
-		- ```CELERYD_USER="amirphl"```
-		- ```CELERYD_GROUP="amirphl"```
+- Add ADA logo
+- auth:
+	- ListCoins
+	- RetrieveCoin
+- remove m,n from responses and database
+- google: free crypto price api
+	- compatible price with trading view (use same exchange price)
+	- "Our Free API has a rate limit of 50 calls/minute."
+- use queue for processing price predictions
+- redesign whole process:
+	- parctice: other designs
+- atomic operations:
+	- update num_mozcoins in CreatePrediction
+- make sure everything is UTC inside server
+- make sure everything is Local timezone inside client
+- different sterategies for prediction params
+- other celery libs:
+	- django-celery-beats
+	- django-celery-results
+- num gunicorn workers
+- organize imports and pylint
+- handle corner case of 51 to 60 in front (client side)
+- redis has a lot of celery keys
+- switch to postgres
+- celery:
+	- ```CELERYD_OPTS="--time-limit=300 --concurrency=8"```
+	- ```CELERYD_USER="amirphl"```
+	- ```CELERYD_GROUP="amirphl"```
