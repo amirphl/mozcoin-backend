@@ -4,6 +4,8 @@ from django.http import (
     HttpResponseServerError,
     JsonResponse,
 )
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic.base import TemplateView
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -92,6 +94,7 @@ class CreatePrediction(CreateAPIView):
         return JsonResponse({}, status = 201)
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class GetPriceIFrameTemplate(TemplateView):
     template_name = 'coin/price-iframe.html'
 

@@ -25,6 +25,6 @@ urlpatterns = [
     path('api/v1/coins/', ListCoins.as_view()),
     path('api/v1/coins/<str:name>', RetrieveCoin.as_view()),
     path('api/v1/coins/<str:name>/predictions/', CreatePrediction.as_view()),
-    path('coins/<str:name>', GetPriceIFrameTemplate.as_view()),
+    path('coins/<str:name>.html', GetPriceIFrameTemplate.as_view()),
     # path('admin/', admin.site.urls),
 ]
