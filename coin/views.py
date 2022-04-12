@@ -4,6 +4,7 @@ from django.http import (
     HttpResponseServerError,
     JsonResponse,
 )
+from django.views.generic.base import TemplateView
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -89,3 +90,12 @@ class CreatePrediction(CreateAPIView):
         PricePrediction.objects.create(user=user, coin=coin, prediction=payload['branches'])
 
         return JsonResponse({}, status = 201)
+
+
+class GetPriceIFrameTemplate(TemplateView):
+    template_name = 'coin/price-iframe.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = self.kwargs['name'].upper()
+        return context

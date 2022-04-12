@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 
-from coin.views import ListCoins, RetrieveCoin, CreatePrediction
+from coin.views import CreatePrediction, GetPriceIFrameTemplate, ListCoins, RetrieveCoin
 from user.views import LoginUser, RegisterUser
 
 
@@ -25,5 +25,6 @@ urlpatterns = [
     path('api/v1/coins/', ListCoins.as_view()),
     path('api/v1/coins/<str:name>', RetrieveCoin.as_view()),
     path('api/v1/coins/<str:name>/predictions/', CreatePrediction.as_view()),
+    path('coins/<str:name>', GetPriceIFrameTemplate.as_view()),
     # path('admin/', admin.site.urls),
 ]
