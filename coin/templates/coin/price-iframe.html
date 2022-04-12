@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div id="tradingview_da354"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{{ name }}USDT/?exchange=BINANCE" rel="noopener" target="_blank"><span class="blue-text">{{ name }}USDT Chart</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+  new TradingView.widget(
+  {
+  "width": 800,
+  "height": 600,
+  "symbol": "BINANCE:{{ name }}USDT",
+  "interval": "5",
+  "timezone": "Etc/UTC",
+  "theme": "light",
+  "style": "1",
+  "locale": "en",
+  "toolbar_bg": "#f1f3f6",
+  "enable_publishing": false,
+  "hide_top_toolbar": true,
+  "container_id": "tradingview_da354"
+}
+  );
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
+</body>
+</html>
