@@ -49,6 +49,7 @@ class CreatePrediction(CreateAPIView):
     def calc_total_moz_on_branches(self, branch_values: list):
         return sum(branch_values)
 
+    # TODO Check for duplicate requests
     def post(self, request, name):
         coin = get_object_or_404(Coin, name=name)
         payload = request.data
@@ -78,6 +79,9 @@ class CreatePrediction(CreateAPIView):
 
         if remained_moz < 0:
             return HttpResponseBadRequest('Not enough moz.')
+
+        if total_moz == 0:
+            return HttpResponseBadRequest('total moz is zero.')
 
         # TODO Atmoic
         user.num_mozcoins = remained_moz
