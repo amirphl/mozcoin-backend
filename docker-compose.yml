@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    expose:
+      - '6379'
+    volumes: 
+      - cache:/data
+volumes:
+  cache:
+    driver: local
