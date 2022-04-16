@@ -13,6 +13,7 @@ class RegisterUser(CreateAPIView):
     def post(self, _):
         user = CustomUser()
         user.username = str(user.uuid)
+        user.num_mozcoins = 50;
         user.save()
         refresh = RefreshToken.for_user(user)
 
