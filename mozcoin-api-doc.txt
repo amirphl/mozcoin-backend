@@ -1,0 +1,87 @@
+register user
+POST /api/v1/users/
+
+req:
+curl -X POST https://mozgame.ir/api/v1/users/
+
+resp: 201
+{
+  "uuid": "538114f8-7b72-43b1-b121-7f6d2d106975",
+  "name": "",
+  "level": 1,
+  "num_mozcoins": 50,
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU2NjY1MjE5LCJpYXQiOjE2NTQwNzMyMTksImp0aSI6ImJhYzBjYTQwMTg3YjQwNzZiZjJmNjc4ODJiZmI1NWM1IiwidXNlcl9pZCI6NTJ9.hB_UvzYjhIQG2Q-4HF6ziwgxchZrh36sjajYDKprCSs"
+}
+
+
+-------------------------
+
+login user
+GET /api/v1/users/<uuid:uuid>
+
+req:
+curl -X GET https://mozgame.ir/api/v1/users/538114f8-7b72-43b1-b121-7f6d2d106975 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU2NjY1MjE5LCJpYXQiOjE2NTQwNzMyMTksImp0aSI6ImJhYzBjYTQwMTg3YjQwNzZiZjJmNjc4ODJiZmI1NWM1IiwidXNlcl9pZCI6NTJ9.hB_UvzYjhIQG2Q-4HF6ziwgxchZrh36sjajYDKprCSs'
+
+resp: 200 || 401 || 404
+{
+  "uuid": "538114f8-7b72-43b1-b121-7f6d2d106975",
+  "name": "",
+  "level": 1,
+  "num_mozcoins": 50,
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU2NjY1NTI3LCJpYXQiOjE2NTQwNzM1MjcsImp0aSI6IjRkNWM4MmZhMzFlMDRmMTVhNGM3ZDY1ZWJlNjAwZDI0IiwidXNlcl9pZCI6NTJ9.brENGQ1czyY3YD-EcuEKp7SGN3gdmSAEHHrtnP3AS-o"
+}
+
+-------------------------
+
+list of coins
+GET /api/v1/coins/
+
+req:
+curl -X GET https://mozgame.ir/api/v1/coins/
+
+resp: 200
+{
+  "coins": [
+    "btc",
+    "eth"
+  ]
+}
+
+-------------------------
+
+round info
+GET /api/v1/coins/<str:name>
+
+req:
+https://mozgame.ir/api/v1/coins/btc
+
+resp: 200 || 404
+{
+  "start_at": "05/21/2022, 07:21:00",
+  "end_at": "05/21/2022, 07:22:00",
+  "eval_time": "05/21/2022, 07:23:00",
+  "m": 1,
+  "n": 2,
+  "branches": [
+    "INF",
+    "29531",
+    "29472",
+    "29413",
+    "29355",
+    "29296",
+    "29237"
+  ]
+}
+
+-------------------------
+
+submit prediction
+POST /api/v1/coins/<str:name>/predictions/
+
+req:
+curl -X POST https://mozgame.ir/api/v1/coins/btc/predictions/ \
+-H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjU2NjY1MjE5LCJpYXQiOjE2NTQwNzMyMTksImp0aSI6ImJhYzBjYTQwMTg3YjQwNzZiZjJmNjc4ODJiZmI1NWM1IiwidXNlcl9pZCI6NTJ9.hB_UvzYjhIQG2Q-4HF6ziwgxchZrh36sjajYDKprCSs'  \
+-H 'Content-Type: application/json' \
+-d '{"branches": {"INF": 2, "29531": 1, "29472": 0, "29413": 1, "29355": 0, "29296": 0, "29237": 0}}'
+
+resp: 201 || 400 || 401 || 404
